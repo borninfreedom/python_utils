@@ -1,0 +1,70 @@
+---
+description: 该规则解释了 Python 编码、最佳实践、 整洁高效的代码模式.
+globs: **/*.py
+alwaysApply: false
+---
+
+# Python 规则
+
+- 遵循 PEP 8 风格指南和命名约定
+- 使用类型注解增强代码可读性和类型安全性
+- 使用虚拟环境管理依赖：
+  - 优先使用 `venv` 或 `poetry` 进行环境隔离
+  - 使用 `requirements.txt` 或 `pyproject.toml` 记录依赖
+- 使用上下文管理器处理资源（如文件操作）
+- 优先使用列表推导式、生成器表达式和字典推导式
+- 使用 `pytest` 进行测试，保持高测试覆盖率
+- 使用文档字符串（docstrings）记录函数、类和模块
+- 遵循面向对象设计原则（SOLID）
+- 使用异常处理保证程序健壮性
+- 使用 `dataclasses` 或 `pydantic` 模型表示数据
+
+# 代码编写规范
+
+## 类的编写规范
+
+- 参数列表解释
+- 返回值解释
+- example示例用法
+- 如果有数学原理和参考paper，就列出
+
+如下面参考代码：
+```Python
+
+def timer(
+    level: int = logging.DEBUG,
+    precision: int = 4,
+    threshold_ms: Optional[float] = None
+) -> Callable:
+    """
+    统计函数执行时间的装饰器
+    
+    Args:
+        level: 日志级别，默认 DEBUG
+        precision: 时间精度（小数点位数），默认 4 位
+        threshold_ms: 仅当执行时间超过此阈值（毫秒）时才记录日志，默认 None 表示始终记录
+    
+    Returns:
+        装饰器函数
+    
+    Example:
+        # 基本用法
+        @timer()
+        def my_function():
+            pass
+        
+        # 指定日志级别
+        @timer(level=logging.INFO)
+        def my_function():
+            pass
+        
+        # 仅记录执行时间超过 100ms 的调用
+        @timer(threshold_ms=100)
+        def my_function():
+            pass
+    
+    数学原理:
+        执行时间 \\( T = t_{end} - t_{start} \\)
+        其中 \\( t_{start} \\) 和 \\( t_{end} \\) 分别是函数调用前后的高精度时间戳（perf_counter）
+    """
+```
