@@ -30,7 +30,7 @@ def pdf_to_jpg(
     
     Args:
         pdf_path: PDF文件路径
-        output_dir: 输出目录，默认为PDF文件所在目录
+        output_dir: 输出目录，默认为PDF文件所在目录下创建与PDF同名的文件夹
         dpi: 输出图像DPI，默认300
         output_prefix: 输出文件名前缀，默认使用PDF文件名
         fmt: 输出格式，默认"jpg"（支持: jpg, png, ppm, pbm）
@@ -42,7 +42,7 @@ def pdf_to_jpg(
     Example:
         >>> # 单页PDF
         >>> pdf_to_jpg("document.pdf")
-        [Path("document_01.jpg")]
+        [Path("document/document_01.jpg")]
         
         >>> # 多页PDF
         >>> pdf_to_jpg("multi_page.pdf", output_dir="./output")
@@ -58,10 +58,11 @@ def pdf_to_jpg(
     
     # 确定输出目录
     if output_dir is None:
-        output_dir = pdf_path.parent
+        # 默认在PDF所在目录下创建与PDF同名的文件夹
+        output_dir = pdf_path.parent / pdf_path.stem
     else:
         output_dir = Path(output_dir)
-        output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     
     # 确定输出文件名前缀
     if output_prefix is None:
@@ -135,7 +136,7 @@ def main():
     )
     parser.add_argument("pdf_path", type=str, help="输入的PDF文件路径")
     parser.add_argument("-o", "--output-dir", type=str, default=None,
-                        help="输出目录（默认为PDF所在目录）")
+                        help="输出目录（默认为PDF所在目录下创建与PDF同名的文件夹）")
     parser.add_argument("--dpi", type=int, default=300,
                         help="输出图像DPI（默认300）")
     parser.add_argument("--prefix", type=str, default=None,
